@@ -1,0 +1,13 @@
+{
+  "name": "web-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/*.js"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.8.1",
+    "mocha": "^10.2.0"
+  }
+}
