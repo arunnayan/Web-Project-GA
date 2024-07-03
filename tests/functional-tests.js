@@ -1,4 +1,4 @@
-onst { Builder, By, Key, until } = require('selenium-webdriver');
+const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
 
 describe('Functional Tests', function() {
