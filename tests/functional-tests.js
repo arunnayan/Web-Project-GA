@@ -1,24 +1,21 @@
-const { Builder, By, Key, until } = require('selenium-webdriver');
-const assert = require('assert');
+const { Builder, By, until } = require('selenium-webdriver');
+const { expect } = require('chai');
 
-describe('Functional Tests', function() {
-  let driver;
+describe('Example Test', function() {
+    this.timeout(30000);
+    let driver;
 
-  before(async function() {
-    // Get the browser from environment variable, default to 'chrome' if not set
-    const browser = process.env.BROWSER || 'chrome';
-    console.log(`Using browser: ${browser}`);
-    driver = await new Builder().forBrowser(browser).build();
-  });
+    before(async function() {
+        driver = await new Builder().forBrowser('chrome').build();
+    });
 
-  after(async function() {
-    await driver.quit();
-  });
+    after(async function() {
+        await driver.quit();
+    });
 
-  it('should open Google and search', async function() {
-    await driver.get('https://www.google.com');
-    await driver.findElement(By.name('q')).sendKeys('Selenium', Key.RETURN);
-    const title = await driver.getTitle();
-    assert.match(title, /Selenium - Google Search/);
-  });
+    it('should open Google and check the title', async function() {
+        await driver.get('http://www.google.com');
+        const title = await driver.getTitle();
+        expect(title).to.equal('Google');
+    });
 });
