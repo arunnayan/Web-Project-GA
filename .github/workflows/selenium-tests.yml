@@ -23,8 +23,15 @@ jobs:
       uses: actions/setup-node@v2  # Setup Node.js environment
       with:
         node-version: '14'  # Specify the Node.js version to use
+    - name: Debug list file
+      run: ls -la   
+    - name: Cat package.json
+      run: cat package.json  
 
     - name: Install dependencies
-      run: npm ci  # Install Node.js dependencies  
+      run: |
+        npm i  # Install Node.js dependencies  
+        npm ls --depth=0
+
     - name: Run tests
       run: npm test  # Run the tests using npm
