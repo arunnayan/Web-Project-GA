@@ -1,11 +1,14 @@
-const { Builder, By, Key, until } = require('selenium-webdriver');
+onst { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
 
 describe('Functional Tests', function() {
   let driver;
 
   before(async function() {
-    driver = await new Builder().forBrowser(process.env.BROWSER).build();
+    // Get the browser from environment variable, default to 'chrome' if not set
+    const browser = process.env.BROWSER || 'chrome';
+    console.log(`Using browser: ${browser}`);
+    driver = await new Builder().forBrowser(browser).build();
   });
 
   after(async function() {
