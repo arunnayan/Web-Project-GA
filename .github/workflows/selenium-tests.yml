@@ -38,10 +38,21 @@ jobs:
         sudo apt-get install -y google-chrome-stable
       
     - name: Install ChromeDriver
+    
       run: |
         CHROME_VERSION=$(google-chrome --version | cut -d ' ' -f 3 | cut -d '.' -f 1)
+        echo "Chrome version: $CHROME_VERSION"
+        # Fetch and print ChromeDriver version
         CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+        echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
+        # Check if the versions are correctly fetched
+        if [ -z "$CHROME_VERSION" ] || [ -z "$CHROMEDRIVER_VERSION" ]; then
+           echo "Error: Unable to fetch Chrome or ChromeDriver version."
+           exit 1
+        fi 
+
         curl -L -O "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+
         unzip chromedriver_linux64.zip
         chmod +x chromedriver
         sudo mv chromedriver /usr/local/bin/
