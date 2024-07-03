@@ -1,4 +1,5 @@
 const { Builder, By, until } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const { expect } = require('chai');
 
 describe('Example Test', function() {
@@ -6,11 +7,21 @@ describe('Example Test', function() {
   let driver;
 
   before(async function() {
-    driver = await new Builder().forBrowser('chrome').build();
+    const options = new chrome.Options();
+    options.addArguments('--headless');
+    options.addArguments('--no-sandbox');
+    options.addArguments('--disable-dev-shm-usage');
+
+    driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(options)
+      .build();
   });
 
   after(async function() {
-    await driver.quit();
+    if (driver) {
+      await driver.quit();
+    }
   });
 
   it('should open Google and check the title', async function() {
