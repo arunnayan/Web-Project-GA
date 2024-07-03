@@ -36,26 +36,31 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y google-chrome-stable
-      
+    - name: Install jq
+      run: sudo apt-get install -y jq  
     - name: Install ChromeDriver
     
       run: |
-        CHROME_VERSION=$(google-chrome --version | cut -d ' ' -f 3 | cut -d '.' -f 1)
-        echo "Chrome version: $CHROME_VERSION"
-        # Fetch and print ChromeDriver version
-        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-        echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
+        LATEST_JSON=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/latest-versions-per-milestone.json)
+
+        CHROME_VERSION=$(echo $LATEST_JSON | jq -r '.milestones | to_entries | max_by(.key | tonumber) | .value.version')
+        CHROMEDRIVER_VERSION=$(echo $LATEST_JSON | jq -r '.milestones | to_entries | max_by(.key | tonumber) | .value.chromeDriver')
+  
+        echo "Latest Chrome version: $CHROME_VERSION"
+        echo "Latest ChromeDriver version: $CHROMEDRIVER_VERSION"
+
+
         # Check if the versions are correctly fetched
         if [ -z "$CHROME_VERSION" ] || [ -z "$CHROMEDRIVER_VERSION" ]; then
            echo "Error: Unable to fetch Chrome or ChromeDriver version."
            exit 1
         fi 
 
-        curl -L -O "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+        curl -L -O "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROME_VERSION}/linux64/chromedriver-linux64.zip"
 
         unzip chromedriver_linux64.zip
-        chmod +x chromedriver
-        sudo mv chromedriver /usr/local/bin/
+        chmod +x chromedriver-linux64/chromedriver
+        sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
         chromedriver --version    
 
     - name: Run tests
