@@ -1,29 +1,30 @@
 name: Web Tests
 on:
-    workflow_dispatch:
-        inputs:
-            platform:
-              description: 'Browser Platform'  # Input to specify the browser platform (chrome or firefox)
-              required: true
-              default: 'chrome'
-              type: choice
-              options:
-                - chrome
-                - firefox   
-                jobs:
-                    selenium-tests:
-                      runs-on: ubuntu-latest  # Use the latest version of Ubuntu as the runner
-                  
-                      steps:
-                      - name: Checkout repository
-                        uses: actions/checkout@v2  # Checkout the repository code
-                  
-                      - name: Setup Node.js
-                        uses: actions/setup-node@v2  # Setup Node.js environment
-                        with:
-                          node-version: '14'  # Specify the Node.js version to use
-                  
-                      - name: Install dependencies
-                        run: npm ci  # Install Node.js dependencies  
-                      - name: Run tests
-                        run: npm test  # Run the tests using npm
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Browser to run tests on'
+        required: true
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - firefox
+  
+jobs:
+  selenium-tests:
+    runs-on: ubuntu-latest  # Use the latest version of Ubuntu as the runner
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # Checkout the repository code
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2  # Setup Node.js environment
+      with:
+        node-version: '14'  # Specify the Node.js version to use
+
+    - name: Install dependencies
+      run: npm ci  # Install Node.js dependencies  
+    - name: Run tests
+      run: npm test  # Run the tests using npm
