@@ -1,21 +1,21 @@
-import { Builder, By, until } from 'selenium-webdriver';
-import { expect } from 'chai';
+const { Builder, By, until } = require('selenium-webdriver');
+const { expect } = require('chai');
 
 describe('Example Test', function() {
-    this.timeout(30000);
-    let driver;
+  this.timeout(30000);
+  let driver;
 
-    before(async function() {
-        driver = await new Builder().forBrowser('chrome').build();
-    });
+  before(async function() {
+    driver = await new Builder().forBrowser('chrome').build();
+  });
 
-    after(async function() {
-        await driver.quit();
-    });
+  after(async function() {
+    await driver.quit();
+  });
 
-    it('should open Google and check the title', async function() {
-        await driver.get('http://www.google.com');
-        const title = await driver.getTitle();
-        expect(title).to.equal('Google');
-    });
+  it('should open Google and check the title', async function() {
+    await driver.get('http://www.google.com');
+    const title = await driver.getTitle();
+    expect(title).to.equal('Google');
+  });
 });
