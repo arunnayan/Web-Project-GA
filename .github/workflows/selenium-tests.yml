@@ -56,7 +56,7 @@ jobs:
        wget -O chrome-linux64.zip "$CHROME_URL"
        unzip chrome-linux64.zip
        sudo mv chrome-linux64 /opt/chrome
-       sudo ln -s /opt/chrome/chrome /usr/bin/google-chrome
+       #  sudo ln -s /opt/chrome/chrome /usr/bin/google-chrome
   
        #Download and install ChromeDriver
        wget -O chromedriver-linux64.zip "$CHROMEDRIVER_URL"
@@ -69,8 +69,10 @@ jobs:
        rm -rf chromedriver-linux64
   
        # Verify installations
-       google-chrome --version
-       chromedriver --version    
+       /opt/chrome/chrome --version
+       chromedriver --version
+       #Set Chrome binary path as an environment variable
+       echo "CHROME_BINARY=/opt/chrome/chrome" >> $GITHUB_ENV     
 
     - name: Run tests
       run: npm test  # Run the tests using npm
